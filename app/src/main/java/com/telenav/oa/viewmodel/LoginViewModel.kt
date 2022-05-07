@@ -1,10 +1,21 @@
 package com.telenav.oa.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.telenav.oa.domain.usecase.LoginUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@HiltViewModel
 class LoginViewModel : ViewModel() {
-    private val _isLogin: MutableLiveData<Boolean> = MutableLiveData()
-    val isLogin: LiveData<Boolean> = _isLogin
+    @Inject
+    lateinit var loginUseCase: LoginUseCase
+
+    fun login(username: String, password: String) {
+        viewModelScope.launch {
+            loginUseCase(username, password)
+        }
+    }
+
 }

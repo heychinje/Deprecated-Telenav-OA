@@ -1,0 +1,7 @@
+package com.telenav.oa.di
+
+import javax.inject.Qualifier
+
+@Retention(AnnotationRetention.BINARY)
+@Qualifier
+annotation class UIDispatcher()

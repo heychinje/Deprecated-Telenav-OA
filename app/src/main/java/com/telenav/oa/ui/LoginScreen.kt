@@ -1,6 +1,5 @@
 package com.telenav.oa.ui
 
-import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -13,19 +12,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.annotation.ExperimentalCoilApi
-import coil.compose.rememberImagePainter
-import coil.transform.BlurTransformation
 import com.telenav.oa.R
+import com.telenav.oa.viewmodel.LoginViewModel
 
 @OptIn(ExperimentalCoilApi::class)
 @Composable
 fun LoginScreen() {
+    val loginViewModel: LoginViewModel = viewModel()
+    var username by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.TopCenter
@@ -63,10 +64,9 @@ fun LoginScreen() {
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Row {
-                        var userName by remember { mutableStateOf("") }
                         TextField(
-                            value = userName,
-                            onValueChange = { userName = it },
+                            value = username,
+                            onValueChange = { username = it },
                             label = { Text(text = "用户名") },
                             colors = TextFieldDefaults.textFieldColors(
                                 backgroundColor = MaterialTheme.colors.background
@@ -74,7 +74,6 @@ fun LoginScreen() {
                         )
                     }
                     Row {
-                        var password by remember { mutableStateOf("") }
                         TextField(
                             value = password,
                             onValueChange = { password = it },
@@ -86,7 +85,9 @@ fun LoginScreen() {
                         )
                     }
 
-                    Button(onClick = { /*TODO*/ }) {
+                    Button(onClick = {
+                        loginViewModel.login(username, password)
+                    }) {
                         Text(text = "登录")
                     }
                 }
